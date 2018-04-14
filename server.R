@@ -19,10 +19,9 @@ function(input, output, session) {
     withProgress(message = "Loading stocks data", value = 0, {
       asset.prices <- sapply(t(stocks), 
                            function(x) {
-                             print(as.character(x))
                              incProgress(1 / nrow(stocks), detail = x)
-                             #as.numeric(getSymbols(as.character(x), from = input$dateFrom, to = input$dateTo,
-                                                   #src = "Finam", auto.assign = F)[, 4])
+                             as.numeric(getSymbols(as.character(x), from = input$dateFrom, to = input$dateTo,
+                                                   src = "Finam", auto.assign = F)[, 4])
                            }, 
                            simplify=FALSE, USE.NAMES=TRUE)
     

@@ -1,6 +1,3 @@
-library(DT)
-library(plotly)
-
 shinyUI(fluidPage(
   tags$style(type = 'text/css', 'html, body {width:100%;height:100%}'),
   tags$title("Stock Market analysis by CAPM"),
@@ -27,7 +24,7 @@ shinyUI(fluidPage(
               ),
               column(4,
                      numericInput(inputId = "rfrInput", label = "Risk-free rate, %", value = 6.5, 
-                                  min = 0.0, max = 100.0, step = 0.5, width = "100%")
+                                  min = 0.0, max = 100.0, step = 0.25, width = "100%")
               )
            ),
            tags$b("Pick a last period quickly"),
@@ -83,6 +80,5 @@ shinyUI(fluidPage(
              )
            )
     )
-    )
   )
-)
+))
