@@ -2,21 +2,23 @@ library(shiny)
 library(DT)
 library(PerformanceAnalytics)
 library(ggplot2)
-library(rusquant)
 library(plotly)
+library(rusquant)
+library(curl)
 
 function(input, output, session) {
   generalData <- reactive({
     stocks <- read.csv2(paste0('./data/', input$tickersList), stringsAsFactors = F)
     days.ago <- difftime(input$dateTo, input$dateFrom, units = c("days"))
-    rf.rate = as.numeric(input$rfrInput / 365 * days.ago)
+    rf.rate <- as.numeric(input$rfrInput / 365 * days.ago)
     
+    options(download.file.method = "libcurl")
     market.prices <- as.numeric(getSymbols(input$indexTicker, from = input$dateFrom, to = input$dateTo, 
                                            src = "Finam", auto.assign = FALSE)[, 4])
     market.returns <- na.omit(diff(market.prices) / market.prices[1 : (length(market.prices) - 1)])
     m.return <- (market.prices[length(market.prices)] - market.prices[1]) / market.prices[1] * 100
     
-    withProgress(message = "Loading stocks data", value = 0, {
+    withProgress(message = "Stock Data Loading", value = 0, {
       asset.prices <- sapply(t(stocks), 
                            function(x) {
                              incProgress(1 / nrow(stocks), detail = x)
@@ -30,7 +32,7 @@ function(input, output, session) {
                             sortino = rep(NA, nrow(stocks)))
     })
     
-    withProgress(message = "Analyzing price data", value = 0, {
+    withProgress(message = "Price Data Analyzing", value = 0, {
       stocks.df[, c("beta", "expected.return", "return", 
                     "alpha", "r2", "sortino")] <- t(as.data.frame(
         lapply(asset.prices, 

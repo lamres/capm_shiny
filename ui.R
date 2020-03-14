@@ -1,13 +1,13 @@
 shinyUI(fluidPage(
   tags$style(type = 'text/css', 'html, body {width:100%;height:100%}'),
-  tags$title("Stock Market analysis by CAPM"),
+  tags$title("RTS Index CAPM"),
   fluidRow(
     column(4, 
         tags$h4("Parameters"),
         wellPanel(
           fluidRow(
             column(4,
-                   textInput("indexTicker", "Index", value = "SPFB.RTS", width = "100%")
+                   textInput("indexTicker", "Index", value = "RTS", width = "100%")
             ),
             column(8,
                    selectInput("tickersList", "Tickers list", c("rtsi_tickers.csv"), width = "100%")
@@ -23,7 +23,7 @@ shinyUI(fluidPage(
                                format = "yyyy-mm-dd", width = "100%")
               ),
               column(4,
-                     numericInput(inputId = "rfrInput", label = "Risk-free rate, %", value = 6.5, 
+                     numericInput(inputId = "rfrInput", label = "Risk-free rate, %", value = 6.0, 
                                   min = 0.0, max = 100.0, step = 0.25, width = "100%")
               )
            ),
